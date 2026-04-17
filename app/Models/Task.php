@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Concerns\Filterable;
 use App\Enums\TaskPriority;
 use App\Enums\TaskStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 #[Fillable(['title', 'description', 'status', 'priority', 'project_id', 'assigned_to', 'due_date', 'sort_order'])]
 class Task extends Model
 {
-    use HasFactory, SoftDeletes;
+    use Filterable, HasFactory, SoftDeletes;
 
     /**
      * Get the project this task belongs to.
