@@ -64,3 +64,67 @@ select:focus[data-flux-control] {
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
+/* ─── Kanban task card transitions ─────────────────────────────────────────── */
+
+/*
+ * wire:transition uses the View Transitions API.
+ * Livewire assigns view-transition-name: match-element by default.
+ * We target the task-card class for enter/leave animations.
+ */
+.task-card {
+    view-transition-name: none; /* each card gets its own name via wire:transition */
+}
+
+/* Cards entering a column */
+::view-transition-new(match-element) {
+    animation: task-card-in 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Cards leaving a column */
+::view-transition-old(match-element) {
+    animation: task-card-out 180ms cubic-bezier(0.55, 0, 1, 0.45) both;
+}
+
+@keyframes task-card-in {
+    from {
+        opacity: 0;
+        transform: translateY(6px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes task-card-out {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-4px) scale(0.98);
+    }
+}
+
+/* Dragging ghost — make it feel lifted */
+[wire\:sort\:item][data-dragging] {
+    opacity: 0.4;
+}
+
+/* Drop placeholder slot */
+[wire\:sort\:item][data-placeholder] {
+    border: 2px dashed var(--color-zinc-300);
+    background: transparent;
+    border-radius: 0.5rem;
+}
+
+.dark [wire\:sort\:item][data-placeholder] {
+    border-color: var(--color-zinc-600);
+}
+
+/* Smooth column count badge update */
+.column-count {
+    transition: all 150ms ease;
+}
